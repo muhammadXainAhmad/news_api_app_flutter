@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_api_app/constants/utils.dart';
+import 'package:news_api_app/widgets/app_name_text.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -36,29 +37,7 @@ class LandingPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "Buzz",
-                            style: TextStyle(
-                              color: blueClr,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextSpan(
-                            text: "News",
-                            style: TextStyle(
-                              color: blackClr,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    AppNameText(),
                     Text(
                       "The world's stories in one buzz",
                       textAlign: TextAlign.center,
