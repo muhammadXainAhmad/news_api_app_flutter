@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_api_app/constants/utils.dart';
 import 'package:news_api_app/methods/api_methods.dart';
@@ -7,7 +8,6 @@ class CategoryNewsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenW = MediaQuery.sizeOf(context).width;
     return Scaffold(
       backgroundColor: blueClr,
       appBar: AppBar(
@@ -28,7 +28,7 @@ class CategoryNewsScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: CircularProgressIndicator(color: blackClr, strokeWidth: 2),
+              child: CircularProgressIndicator(color: whiteClr, strokeWidth: 2),
             );
           } else if (snapshot.hasError) {
             return Center(
@@ -53,9 +53,8 @@ class CategoryNewsScreen extends StatelessWidget {
                   topRight: Radius.circular(40),
                 ),
               ),
-              width: screenW,
+              width: double.infinity,
               child: ListView.builder(
-                shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 physics: BouncingScrollPhysics(),
                 itemCount: snapshot.data!.length,
@@ -69,25 +68,8 @@ class CategoryNewsScreen extends StatelessWidget {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child: Image(
-                              image: NetworkImage(
-                                snapshot.data![index].urlToImage,
-                                headers: {
-                                  "User-Agent":
-                                      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                                      "AppleWebKit/537.36 (KHTML, like Gecko) "
-                                      "Chrome/120.0.0.0 Safari/537.36",
-                                },
-                              ),
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  "assets/news1.jpg",
-                                  height: 195,
-                                  width: screenW,
-                                  fit: BoxFit.cover,
-                                );
-                              },
+                            child: _buildImage(
+                              snapshot.data![index].urlToImage,
                             ),
                           ),
                           Text(
@@ -113,4 +95,36 @@ class CategoryNewsScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildImage(String? url) {
+  if (url == null ||
+      url.isEmpty ||
+      url.contains("investopedia.com") ||
+      url.contains("huffingtonpost.com")) {
+    return Image.asset(
+      "assets/news1.jpg",
+      height: 195,
+      width: double.infinity,
+      fit: BoxFit.cover,
+    );
+  }
+
+  return CachedNetworkImage(
+    imageUrl: url,
+    height: 195,
+    width: double.infinity,
+    fit: BoxFit.cover,
+    placeholder:
+        (context, url) => Center(
+          child: CircularProgressIndicator(strokeWidth: 2, color: blackClr),
+        ),
+    errorWidget:
+        (context, url, error) => Image.asset(
+          "assets/news1.jpg",
+          height: 195,
+          width: double.infinity,
+          fit: BoxFit.cover,
+        ),
+  );
 }
