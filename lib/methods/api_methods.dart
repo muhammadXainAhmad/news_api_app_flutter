@@ -36,4 +36,19 @@ class ApiMethods {
       throw Exception("ERROR!");
     }
   }
+
+  Future<List<ArticleModel>> getTrendingNews() async {
+    final response = await http.get(
+      Uri.parse(
+        "https://newsapi.org/v2/everything?domains=wsj.com&apiKey=$apiKey",
+      ),
+    );
+    var data = jsonDecode(response.body);
+    if (data["status"] == "ok") {
+      List articles = data["articles"];
+      return articles.map((json) => ArticleModel.fromJson(json)).toList();
+    } else {
+      throw Exception("ERROR!");
+    }
+  }
 }

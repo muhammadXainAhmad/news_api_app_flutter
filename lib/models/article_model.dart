@@ -1,15 +1,22 @@
 class ArticleModel {
   final String title;
-  final String? urlToImage;
-  final String? webUrl;
+  final String desc;
+  final String urlToImage;
+  final String webUrl;
 
-  ArticleModel({required this.title, this.urlToImage, required this.webUrl});
+  ArticleModel({
+    required this.title,
+    required this.desc,
+    required this.urlToImage,
+    required this.webUrl,
+  });
 
   factory ArticleModel.fromJson(Map<String, dynamic> json) {
     return ArticleModel(
-      title: json['title'],
-      urlToImage: json['urlToImage'],
-      webUrl: json["url"],
+      title: json['title'] ?? "No Title",
+      desc: json['description'] ?? "No Description Available",
+      urlToImage: json['urlToImage'] ?? "",
+      webUrl:json["url"]??""
     );
   }
 }

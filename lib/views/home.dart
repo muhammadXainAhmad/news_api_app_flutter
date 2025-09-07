@@ -35,18 +35,59 @@ class _HomePageState extends State<HomePage> {
         title: AppNameText(),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18.0),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HeadingText(text: "Top Stories"),
-              SizedBox(height: 10),
-              SizedBox(
-                height: screenH * 0.34,
-                child: FutureBuilder(
-                  future: apiMethods.getNews(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HeadingText(text: "Top Stories"),
+                SizedBox(height: 10),
+                SizedBox(
+                  height: screenH * 0.34,
+                  child: FutureBuilder(
+                    future: apiMethods.getNews(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: blackClr,
+                            strokeWidth: 2,
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            "Error Loading News",
+                            style: TextStyle(color: blackClr, fontSize: 14),
+                          ),
+                        );
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return Center(
+                          child: Text(
+                            "No News Available",
+                            style: TextStyle(color: blackClr, fontSize: 14),
+                          ),
+                        );
+                      } else {
+                        final articles = snapshot.data!;
+                        return TopStoriesCard(article: articles);
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(height: 10),
+                HeadingText(text: "Explore"),
+                SizedBox(height: 10),
+                SizedBox(
+                  height: 122,
+                  child: CategoryCircleList(categories: categoriesHeading),
+                ),
+                SizedBox(height: 10),
+                HeadingText(text: "Trending"),
+                FutureBuilder(
+                  future: ApiMethods().getTrendingNews(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
@@ -71,23 +112,12 @@ class _HomePageState extends State<HomePage> {
                       );
                     } else {
                       final articles = snapshot.data!;
-                      return TopStoriesCard(article: articles);
+                      return TrendingListTile(article: articles);
                     }
                   },
                 ),
-              ),
-              SizedBox(height: 10),
-              HeadingText(text: "Explore"),
-              SizedBox(height: 10),
-              SizedBox(
-                height: 122,
-                child: CategoryCircleList(categories: categoriesHeading),
-              ),
-              SizedBox(height: 10),
-              HeadingText(text: "Trending"),
-              SizedBox(height: 10),
-              TrendingListTile(),
-            ],
+              ],
+            ),
           ),
         ),
       ),

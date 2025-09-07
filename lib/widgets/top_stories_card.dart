@@ -23,7 +23,7 @@ class TopStoriesCard extends StatelessWidget {
                 MaterialPageRoute(
                   builder:
                       (context) =>
-                          WebViewScreen(webUrl: article[index].webUrl!),
+                          WebViewScreen(webUrl: article[index].webUrl),
                 ),
               ),
           child: Padding(
@@ -41,7 +41,7 @@ class TopStoriesCard extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.network(
-                        article[index].urlToImage!,
+                        article[index].urlToImage,
                         fit: BoxFit.cover,
                         height: 150,
                         width: screenW * 0.55,

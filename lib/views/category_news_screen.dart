@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_api_app/constants/utils.dart';
 import 'package:news_api_app/methods/api_methods.dart';
 import 'package:news_api_app/views/web_view_screen.dart';
+import 'package:news_api_app/widgets/build_image.dart';
 
 class CategoryNewsScreen extends StatelessWidget {
   final String name;
@@ -81,8 +81,10 @@ class CategoryNewsScreen extends StatelessWidget {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(20),
-                              child: _buildImage(
+                              child: buildImage(
                                 snapshot.data![index].urlToImage,
+                                195,
+                                double.infinity,
                               ),
                             ),
                             Text(
@@ -109,36 +111,4 @@ class CategoryNewsScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget _buildImage(String? url) {
-  if (url == null ||
-      url.isEmpty ||
-      url.contains("investopedia.com") ||
-      url.contains("huffingtonpost.com")) {
-    return Image.asset(
-      "assets/news1.jpg",
-      height: 195,
-      width: double.infinity,
-      fit: BoxFit.cover,
-    );
-  }
-
-  return CachedNetworkImage(
-    imageUrl: url,
-    height: 195,
-    width: double.infinity,
-    fit: BoxFit.cover,
-    placeholder:
-        (context, url) => Center(
-          child: CircularProgressIndicator(strokeWidth: 2, color: blackClr),
-        ),
-    errorWidget:
-        (context, url, error) => Image.asset(
-          "assets/news1.jpg",
-          height: 195,
-          width: double.infinity,
-          fit: BoxFit.cover,
-        ),
-  );
 }
