@@ -22,10 +22,10 @@ class ApiMethods {
     }
   }
 
-  Future<List<CategoryModel>> getCategoryNews() async {
+  Future<List<CategoryModel>> getCategoryNews(String categoryName) async {
     final response = await http.get(
       Uri.parse(
-        "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=$apiKey",
+        "https://newsapi.org/v2/top-headlines?country=us&category=$categoryName&apiKey=$apiKey",
       ),
     );
     var data = jsonDecode(response.body);

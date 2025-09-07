@@ -4,7 +4,8 @@ import 'package:news_api_app/constants/utils.dart';
 import 'package:news_api_app/methods/api_methods.dart';
 
 class CategoryNewsScreen extends StatelessWidget {
-  const CategoryNewsScreen({super.key});
+  final String name;
+  const CategoryNewsScreen({super.key,required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class CategoryNewsScreen extends StatelessWidget {
         backgroundColor: blueClr,
         iconTheme: IconThemeData(color: whiteClr, size: 32),
         title: Text(
-          "Business",
+          name,
           style: TextStyle(
             color: whiteClr,
             fontWeight: FontWeight.bold,
@@ -24,7 +25,7 @@ class CategoryNewsScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: FutureBuilder(
-        future: ApiMethods().getCategoryNews(),
+        future: ApiMethods().getCategoryNews(name.toLowerCase()),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
