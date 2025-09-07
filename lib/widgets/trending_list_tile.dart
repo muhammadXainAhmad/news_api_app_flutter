@@ -44,7 +44,7 @@ class TrendingListTile extends StatelessWidget {
                     textAlign: TextAlign.center,
                     "Lorem ipsum is simply dummy text to display in a ui.",
                     style: TextStyle(
-                      color: Colors.grey.shade700,
+                      color: greyClr,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),

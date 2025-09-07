@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:news_api_app/constants/utils.dart';
 import 'package:news_api_app/methods/api_methods.dart';
-import 'package:news_api_app/methods/category_data.dart';
-import 'package:news_api_app/models/category_model.dart';
+import 'package:news_api_app/methods/category_heading_data.dart';
+import 'package:news_api_app/models/category_heading_model.dart';
+import 'package:news_api_app/views/category_news_screen.dart';
 import 'package:news_api_app/widgets/app_name_text.dart';
 import 'package:news_api_app/widgets/category_circle_list.dart';
 import 'package:news_api_app/widgets/heading_text.dart';
@@ -17,11 +18,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<CategoryModel> categories = [];
+  List<CategoryHeadingModel> categoriesHeading = [];
   ApiMethods apiMethods = ApiMethods();
   @override
   void initState() {
-    categories = getCategories();
+    categoriesHeading = getCategoriesHeading();
     super.initState();
   }
 
@@ -81,7 +82,16 @@ class _HomePageState extends State<HomePage> {
               SizedBox(height: 10),
               SizedBox(
                 height: 122,
-                child: CategoryCircleList(categories: categories),
+                child: GestureDetector(
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryNewsScreen(),
+                        ),
+                      ),
+                  child: CategoryCircleList(categories: categoriesHeading),
+                ),
               ),
               SizedBox(height: 10),
               HeadingText(text: "Trending"),

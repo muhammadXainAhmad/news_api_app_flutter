@@ -1,6 +1,18 @@
 class CategoryModel {
-  final String categoryName;
-  final String categoryImage;
+  final String title;
+  final String description;
+  final String urlToImage;
+  CategoryModel({
+    required this.title,
+    required this.description,
+    required this.urlToImage,
+  });
 
-  CategoryModel({required this.categoryName, required this.categoryImage});
+  factory CategoryModel.fromJson(Map<String, dynamic> json) {
+    return CategoryModel(
+      title: json['title'] ?? "No Title",
+      description: json['description'] ?? "No Description Available",
+      urlToImage: json['urlToImage'] ?? "",
+    );
+  }
 }
