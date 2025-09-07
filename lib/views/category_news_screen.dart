@@ -2,10 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_api_app/constants/utils.dart';
 import 'package:news_api_app/methods/api_methods.dart';
+import 'package:news_api_app/views/web_view_screen.dart';
 
 class CategoryNewsScreen extends StatelessWidget {
   final String name;
-  const CategoryNewsScreen({super.key,required this.name});
+  const CategoryNewsScreen({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -60,33 +61,45 @@ class CategoryNewsScreen extends StatelessWidget {
                 physics: BouncingScrollPhysics(),
                 itemCount: snapshot.data!.length,
                 itemBuilder:
-                    (context, index) => Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24.0,
-                        vertical: 12,
-                      ),
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: _buildImage(
-                              snapshot.data![index].urlToImage,
+                    (context, index) => GestureDetector(
+                      onTap:
+                          () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => WebViewScreen(
+                                    webUrl: snapshot.data![index].webUrl,
+                                  ),
                             ),
                           ),
-                          Text(
-                            snapshot.data![index].title,
-                            style: TextStyle(
-                              color: blackClr,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24.0,
+                          vertical: 12,
+                        ),
+                        child: Column(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: _buildImage(
+                                snapshot.data![index].urlToImage,
+                              ),
                             ),
-                          ),
-                          Text(
-                            textAlign: TextAlign.justify,
-                            snapshot.data![index].description,
-                            style: TextStyle(color: greyClr, fontSize: 16),
-                          ),
-                        ],
+                            Text(
+                              snapshot.data![index].title,
+                              style: TextStyle(
+                                color: blackClr,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              textAlign: TextAlign.justify,
+                              snapshot.data![index].description,
+                              style: TextStyle(color: greyClr, fontSize: 16),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
               ),
